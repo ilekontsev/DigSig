@@ -1,0 +1,28 @@
+<div class="root">
+  <div class="wrapper-root">
+    <div class="container">
+      <ng-container *ngTemplateOutlet="profile"></ng-container>
+      <ng-container *ngTemplateOutlet="settings"></ng-container>
+    </div>
+  </div>
+</div>
+
+<ng-template #profile>
+  <div class="block-profile">
+    <div class="profile-avatar">
+      <div class="image">I</div>
+    </div>
+    <div class="block-profile-name">
+      <span class="profile-name profile-first-name">Ivan </span>
+      <span class="profile-name profile-first-name">Ivanov</span>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #settings>
+  <div class="block-settings">
+      <div class="settings-title">
+          Profile settings/info
+      </div>
+  </div>
+</ng-template>

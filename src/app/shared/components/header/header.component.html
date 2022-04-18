@@ -1,0 +1,33 @@
+<header class="root">
+  <div class="header-container">
+    <div class="wrapper">
+      <div class="logo"><a routerLink="/signature">DigSig</a></div>
+      <ng-container *ngTemplateOutlet="profile"></ng-container>
+    </div>
+  </div>
+</header>
+
+<ng-template #profile>
+  <div>
+    <mat-icon class="mr10" routerLink="/signature">home</mat-icon>
+
+    <mat-icon class="mr10" matBadge="" matBadgeColor="warn"
+      >notifications</mat-icon
+    >
+
+    <mat-icon
+      [matMenuTriggerFor]="menu"
+      (menuOpened)="checkStatusMenu(true)"
+      (menuClosed)="checkStatusMenu(false)"
+      >{{ iconProfile }}</mat-icon
+    >
+    <mat-menu #menu="matMenu">
+      <ng-container *ngFor="let menu of menuList">
+        <button mat-menu-item (click)="selectMenu(menu.label)">
+          <mat-icon>{{ menu.icon }}</mat-icon>
+          <span>{{ menu.label }}</span>
+        </button>
+      </ng-container>
+    </mat-menu>
+  </div>
+</ng-template>

@@ -1,0 +1,39 @@
+.header-container {
+  width: 100%;
+  height: 55px;
+  background: #111927;
+  padding: 0 20px;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+}
+
+.mr10 {
+  margin-right: 10px;
+}
+
+a {
+  color: rgb(255, 255, 255);
+}
+
+mat-icon {
+  color: rgb(214, 214, 214);
+
+}
+
+mat-icon:hover,
+a:hover {
+  cursor: pointer;
+  color: #9FEF0E;
+  transition-duration: 0.3s;
+}

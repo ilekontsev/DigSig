@@ -1,0 +1,26 @@
+.root-wrapper {
+  position: relative;
+  height: calc(100vh - 55px);
+  width: 100%;
+    .text-container {
+        position: absolute;
+        top: 55px;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+        text-align: center;
+    }
+  .action-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+button {
+  width: 20%;
+  margin: 20px;
+}

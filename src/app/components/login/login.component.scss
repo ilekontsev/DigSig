@@ -1,0 +1,38 @@
+
+.wrapper-root{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 55px);
+
+}
+
+.progress-bar{
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.container-form{
+    display: flex;
+    margin: 50px;
+    justify-content: center;
+    flex-direction: column;
+    width: 20%;
+}
+
+.arrow-form{
+    button{
+        background: #2C3441;
+    }
+}
