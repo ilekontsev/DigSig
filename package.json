@@ -1,6 +1,6 @@
 {
-  "name": "dig-sig",
-  "version": "0.0.1",
+  "name": "DigSig",
+  "version": "0.1.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -15,11 +15,12 @@
     "@angular/common": "~12.2.0",
     "@angular/compiler": "~12.2.0",
     "@angular/core": "~12.2.0",
-    "@angular/forms": "~12.2.0",
+    "@angular/forms": "^13.3.3",
     "@angular/material": "^12.2.13",
     "@angular/platform-browser": "~12.2.0",
     "@angular/platform-browser-dynamic": "~12.2.0",
     "@angular/router": "~12.2.0",
+    "ngx-dropzone": "^3.1.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

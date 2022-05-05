@@ -11,6 +11,9 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { MaterialModule } from './modules/material/material.module';
+import { DialogSignComponent } from './components/dialogs/dialog-sign/dialog-sign.component';
+import { DialogCheckComponent } from './components/dialogs/dialog-check/dialog-check.component';
+import { NgxDropzoneModule } from 'ngx-dropzone';
 
 @NgModule({
   declarations: [
@@ -19,9 +22,12 @@ import { MaterialModule } from './modules/material/material.module';
     SignatureComponent,
     LoginComponent,
     NotFoundComponent,
-    HeaderComponent
+    HeaderComponent,
+    DialogSignComponent,
+    DialogCheckComponent,
   ],
   imports: [
+    NgxDropzoneModule,
     MaterialModule,
     BrowserModule,
     AppRoutingModule,

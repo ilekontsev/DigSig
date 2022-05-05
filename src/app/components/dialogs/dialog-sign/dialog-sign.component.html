@@ -1,0 +1,45 @@
+<ng-container [ngSwitch]="formTemplate">
+  <ng-container *ngSwitchCase="'dropzone'">
+    <ng-container [ngTemplateOutlet]="dropzone"></ng-container>
+  </ng-container>
+  <ng-container *ngSwitchCase="'verification'">
+    <ng-container [ngTemplateOutlet]="codeEmail"></ng-container>
+  </ng-container>
+</ng-container>
+
+<ng-template #dropzone>
+  <div class="inputs flex">
+    <mat-form-field class="width-input" appearance="fill">
+      <mat-label>Secret key</mat-label>
+      <input matInput />
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="singDocument()">
+      Sign
+    </button>
+  </div>
+
+  <ngx-dropzone (change)="onSelect($event)">
+    <ngx-dropzone-label class="color-text">Drop it file</ngx-dropzone-label>
+    <ngx-dropzone-preview
+      *ngFor="let f of files"
+      [removable]="true"
+      (removed)="onRemove(f)"
+    >
+      <ngx-dropzone-label class="color-text"
+        >{{ f.name }} ({{ f.type }})</ngx-dropzone-label
+      >
+    </ngx-dropzone-preview>
+  </ngx-dropzone>
+</ng-template>
+
+<ng-template #codeEmail>
+  <div class="inputs flex">
+    <mat-form-field class="width-input" appearance="fill">
+      <mat-label>Verification email</mat-label>
+      <input matInput type="text" />
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="singDocument()">
+      GO
+    </button>
+  </div>
+</ng-template>

@@ -12,6 +12,7 @@ export class HeaderComponent implements OnInit {
     { label: 'Logout', icon: 'logout' },
   ];
   iconProfile = 'widgets';
+  value: string = '';
 
   constructor(private _router: Router) {}
 

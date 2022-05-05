@@ -7,8 +7,9 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatDialogModule} from '@angular/material/dialog';
 
-const LIST_MODULE = [MatBadgeModule, MatIconModule, MatMenuModule,MatButtonModule,MatInputModule,MatProgressBarModule,MatProgressSpinnerModule];
+const LIST_MODULE = [MatBadgeModule, MatDialogModule, MatIconModule, MatMenuModule,MatButtonModule,MatInputModule,MatProgressBarModule,MatProgressSpinnerModule];
 
 @NgModule({
   declarations: [],
