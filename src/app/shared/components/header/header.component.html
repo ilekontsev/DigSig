@@ -2,16 +2,34 @@
   <div class="header-container">
     <div class="wrapper">
       <div class="logo"><a routerLink="/signature">DigSig</a></div>
+
+      
+
       <ng-container *ngTemplateOutlet="profile"></ng-container>
     </div>
   </div>
 </header>
 
 <ng-template #profile>
-  <div>
+  <div class="wrapper-menu">
+    <mat-form-field class="example-form-field" appearance="standard">
+      <input matInput placeholder="Search"/>
+      <button
+        *ngIf="value"
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="value = ''"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
     <mat-icon class="mr10" routerLink="/signature">home</mat-icon>
 
-    <mat-icon class="mr10" matBadge="" matBadgeColor="warn"
+    <!-- <div>Sign in</div> -->
+
+    <mat-icon class="mr10" matBadge="1" matBadgeColor="warn"
       >notifications</mat-icon
     >
 

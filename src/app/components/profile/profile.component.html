@@ -16,13 +16,49 @@
       <span class="profile-name profile-first-name">Ivan </span>
       <span class="profile-name profile-first-name">Ivanov</span>
     </div>
+
+    <div class="border"></div>
+
+    <div class="block-profile-name">
+      <span class="profile-name profile-first-name">Info:</span>
+    </div>
+    <div class="block-profile-name info">
+      <span class="profile-name profile-first-name">Birthday: 26/05/97</span>
+    </div>
+    <div class="block-profile-name info">
+      <span class="profile-name profile-first-name">Status EDS: received</span>
+    </div>
+    <div class="block-profile-name info">
+      <span class="profile-name profile-first-name">Term EDS: Infifnity</span>
+    </div>
   </div>
 </ng-template>
 
 <ng-template #settings>
   <div class="block-settings">
-      <div class="settings-title">
-          Profile settings/info
-      </div>
+    <div class="settings-title">Profile settings/info</div>
+    <ng-container *ngTemplateOutlet="inputs"></ng-container>
   </div>
+</ng-template>
+
+<ng-template #inputs>
+  <ng-container *ngFor="let setting of settingsList">
+  <div class="inputs">
+    <mat-form-field class="example-full-width" appearance="fill">  
+      <mat-label>{{setting.title}}</mat-label>
+      <input matInput readonly [value]="setting.info">
+    </mat-form-field>
+  </div>
+</ng-container>
+
+<div class="mb20">Devices</div>
+<ng-container *ngFor="let device of deviceList">
+  <div class="inputs">
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>{{device.title}}</mat-label>
+      <input matInput readonly [value]='device.info'>
+    </mat-form-field>
+  </div>
+</ng-container>
+
 </ng-template>
