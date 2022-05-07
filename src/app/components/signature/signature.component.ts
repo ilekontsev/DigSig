@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import {
   MatDialog,
   MatDialogRef,
@@ -7,6 +7,7 @@ import {
 import { DialogSignComponent } from '../dialogs/dialog-sign/dialog-sign.component';
 import { take } from 'rxjs/operators';
 import { DialogCheckComponent } from '../dialogs/dialog-check/dialog-check.component';
+import { StateService } from 'src/app/shared/services/state.service';
 
 @Component({
   selector: 'app-signature',
@@ -14,13 +15,19 @@ import { DialogCheckComponent } from '../dialogs/dialog-check/dialog-check.compo
   styleUrls: ['./signature.component.scss'],
 })
 export class SignatureComponent implements OnInit {
-  constructor(private _dialog: MatDialog) {}
-
-  ngOnInit(): void {}
+  widthDialog = '60%';
+  constructor(
+    private _dialog: MatDialog,
+    private _stateService: StateService
+  ) {}
+  ngOnInit(): void {
+    this._stateService.widthDialog.subscribe(
+      (width: string) => (this.widthDialog = width)
+    );
+  }
 
   openDialogSign(): void {
     const dialogRef = this._dialog.open(DialogSignComponent, {
-      width: '60%',
     });
 
     dialogRef
@@ -31,9 +38,8 @@ export class SignatureComponent implements OnInit {
       });
   }
 
-  openDialogCheck(): void{
+  openDialogCheck(): void {
     const dialogRef = this._dialog.open(DialogCheckComponent, {
-      width: '60%',
     });
 
     dialogRef
@@ -43,5 +49,4 @@ export class SignatureComponent implements OnInit {
         console.log('The dialog was closed');
       });
   }
-
 }

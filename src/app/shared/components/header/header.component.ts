@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-header',
@@ -13,10 +15,26 @@ export class HeaderComponent implements OnInit {
   ];
   iconProfile = 'widgets';
   value: string = '';
+  public login: any;
+  headerTitle = 'Sign out';
+  constructor(private _router: Router, private _apiService: ApiService) {
+   
+  }
 
-  constructor(private _router: Router) {}
+  ngOnInit(): void {
+    this.redirect()
+    this.login = this._apiService.login
+  }
 
-  ngOnInit(): void {}
+  redirect(){
+    if (this._router.url === '/login') {
+      this.headerTitle = 'Sign in';
+      this._router.navigateByUrl('/login/register');
+    } else {
+      this.headerTitle = 'Sign out';
+      this._router.navigateByUrl('/login');
+    }
+  }
 
   checkStatusMenu(isOpen: boolean) {
     this.iconProfile = isOpen ? 'disabled_by_default' : 'widgets';

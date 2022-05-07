@@ -3,17 +3,23 @@
     <div class="wrapper">
       <div class="logo"><a routerLink="/signature">DigSig</a></div>
 
-      
-
-      <ng-container *ngTemplateOutlet="profile"></ng-container>
+      <ng-container *ngIf="login | async; else title">
+        <ng-container *ngTemplateOutlet="profile"></ng-container>
+      </ng-container>
     </div>
   </div>
 </header>
 
+<ng-template #title>
+  <div>
+    <a (click)="redirect()">{{ headerTitle }}</a>
+  </div>
+</ng-template>
+
 <ng-template #profile>
   <div class="wrapper-menu">
     <mat-form-field class="example-form-field" appearance="standard">
-      <input matInput placeholder="Search"/>
+      <input matInput placeholder="Search" />
       <button
         *ngIf="value"
         matSuffix
@@ -26,8 +32,6 @@
     </mat-form-field>
 
     <mat-icon class="mr10" routerLink="/signature">home</mat-icon>
-
-    <!-- <div>Sign in</div> -->
 
     <mat-icon class="mr10" matBadge="1" matBadgeColor="warn"
       >notifications</mat-icon

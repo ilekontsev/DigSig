@@ -14,6 +14,8 @@ import { MaterialModule } from './modules/material/material.module';
 import { DialogSignComponent } from './components/dialogs/dialog-sign/dialog-sign.component';
 import { DialogCheckComponent } from './components/dialogs/dialog-check/dialog-check.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
+import { FormsModule } from '@angular/forms';
+import {  HttpClientModule,  } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -30,8 +32,10 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
     NgxDropzoneModule,
     MaterialModule,
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

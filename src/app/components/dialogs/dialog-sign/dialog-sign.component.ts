@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
+import { StateService } from 'src/app/shared/services/state.service';
 
 @Component({
   selector: 'app-dialog-sign',
@@ -9,15 +10,14 @@ import { Component, OnInit } from '@angular/core';
 export class DialogSignComponent implements OnInit {
   title = 'dropzone';
 
-  constructor() {}
+  constructor(private _stateService: StateService) {}
 
   ngOnInit(): void {}
-  formTemplate = 'dropzone'
+  formTemplate = 'dropzone';
   files: File[] = [];
 
   singDocument() {
-    console.log('next');
-    this.formTemplate = 'verification'
+    this.formTemplate = 'verification';
   }
 
   onSelect(event: any) {
@@ -30,6 +30,8 @@ export class DialogSignComponent implements OnInit {
       formData.append('file[]', this.files[i]);
     }
   }
+
+  resendSendCode() {}
 
   onRemove(event: any) {
     console.log(event);
