@@ -13,7 +13,7 @@
 
       <ng-container [ngSwitch]="templateNumber">
         <ng-container *ngSwitchCase="'0'">
-          <ng-container [ngTemplateOutlet]="form"></ng-container>
+          <ng-container *ngIf ="formlogin; then formTwo;else form "></ng-container>
         </ng-container>
         <ng-container *ngSwitchCase="'1'">
           <ng-container [ngTemplateOutlet]="codeEmail"></ng-container>
@@ -32,15 +32,29 @@
   </div>
 </div>
 
+<ng-template #formTwo>
+  <div class="container-form">
+    <mat-form-field class="example-form-field" appearance="fill"  *ngFor="let data of dataLogin">
+      <mat-label>{{ data.label }}</mat-label>
+      <input matInput [type]="data.type" [(ngModel)]='data.input'/>
+      <button matSuffix mat-icon-button aria-label="data.aria_label">
+        <mat-icon>{{ data.icon }}</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+
+</ng-template>
+
 <ng-template #codeEmail>
   <div class="container-form">
     <mat-form-field class="example-form-field" appearance="fill">
-      <mat-label>Verification email</mat-label>
+      <mat-label>Verification Code</mat-label>
       <input matInput type="text" />
       <button matSuffix mat-icon-button aria-label="Clear">
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
+    <button mat-raised-button color="primary" (click)="resendSendCode()">resend code</button>
   </div>
 </ng-template>
 
@@ -58,58 +72,11 @@
 
 <ng-template #form>
   <div class="container-form">
-    <mat-form-field class="example-form-field" appearance="fill">
-      <mat-label>First name</mat-label>
-      <input matInput type="text" />
-      <button matSuffix mat-icon-button aria-label="Clear">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field>
-
-    <mat-form-field class="example-form-field" appearance="fill">
-      <mat-label>Middle name</mat-label>
-      <input matInput type="text" />
-      <button matSuffix mat-icon-button aria-label="Clear">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field>
-
-    <mat-form-field class="example-form-field" appearance="fill">
-      <mat-label>Last Name</mat-label>
-      <input matInput type="text" />
-      <button matSuffix mat-icon-button aria-label="Clear">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field>
-
-    <mat-form-field class="example-full-width" appearance="fill">
-      <mat-label>Email</mat-label>
-      <input type="email" matInput placeholder="Ex. pat@example.com" />
-      <button matSuffix mat-icon-button aria-label="Clear">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field>
-
-    <mat-form-field class="example-full-width" appearance="fill">
-      <mat-label>Telephone</mat-label>
-      <span matPrefix>+1 &nbsp;</span>
-      <input type="tel" matInput placeholder="555-555-1234" />
-      <mat-icon matSuffix>mode_edit</mat-icon>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Enter your password</mat-label>
-      <input matInput />
-      <button mat-icon-button matSuffix [attr.aria-label]="'Hide password'">
-        <mat-icon>visibility_off</mat-icon>
-      </button>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Enter your correct password</mat-label>
-      <input matInput />
-      <button mat-icon-button matSuffix [attr.aria-label]="'Hide password'">
-        <mat-icon>visibility_off</mat-icon>
+    <mat-form-field class="example-form-field" appearance="fill"  *ngFor="let data of dataButtons">
+      <mat-label>{{ data.label }}</mat-label>
+      <input matInput [type]="data.type" [(ngModel)]='data.input'/>
+      <button matSuffix mat-icon-button aria-label="data.aria_label">
+        <mat-icon>{{ data.icon }}</mat-icon>
       </button>
     </mat-form-field>
   </div>

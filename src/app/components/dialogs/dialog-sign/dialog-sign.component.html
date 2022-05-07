@@ -13,7 +13,7 @@
       <mat-label>Secret key</mat-label>
       <input matInput />
     </mat-form-field>
-    <button mat-raised-button color="primary" (click)="singDocument()">
+    <button mat-raised-button class="button-dialog" color="primary" (click)="singDocument()">
       Sign
     </button>
   </div>
@@ -38,8 +38,12 @@
       <mat-label>Verification email</mat-label>
       <input matInput type="text" />
     </mat-form-field>
-    <button mat-raised-button color="primary" (click)="singDocument()">
-      GO
-    </button>
+    <div class="button-dialog">
+      <button mat-raised-button (click)="resendSendCode()">resend code</button>
+
+      <button mat-raised-button color="primary" (click)="singDocument()">
+        GO
+      </button>
+    </div>
   </div>
 </ng-template>
