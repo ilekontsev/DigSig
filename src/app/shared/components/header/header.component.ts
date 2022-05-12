@@ -17,20 +17,19 @@ export class HeaderComponent implements OnInit {
   value: string = '';
   public login: any;
   headerTitle = 'Sign out';
-  constructor(private _router: Router, private _apiService: ApiService) {
-   
-  }
+  constructor(private _router: Router, private _apiService: ApiService) {}
 
   ngOnInit(): void {
-    this.redirect()
-    this.login = this._apiService.login
+    this.redirect();
+    this.login = this._apiService.login;
   }
 
-  redirect(){
+  redirect() {
     if (this._router.url === '/login') {
       this.headerTitle = 'Sign in';
       this._router.navigateByUrl('/login/register');
-    } else {
+    }
+    if (this._router.url === '/register') {
       this.headerTitle = 'Sign out';
       this._router.navigateByUrl('/login');
     }
