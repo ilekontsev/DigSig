@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Output } from '@angular/core';
+import { DigitalSignatureService } from 'src/app/services/digital-signature.service';
 import { StateService } from 'src/app/shared/services/state.service';
 
 @Component({
@@ -10,7 +11,10 @@ import { StateService } from 'src/app/shared/services/state.service';
 export class DialogSignComponent implements OnInit {
   title = 'dropzone';
 
-  constructor(private _stateService: StateService) {}
+  constructor(
+    private _stateService: StateService,
+    private _digitalSignatureService: DigitalSignatureService
+  ) {}
 
   ngOnInit(): void {}
   formTemplate = 'dropzone';
@@ -26,9 +30,12 @@ export class DialogSignComponent implements OnInit {
 
     const formData = new FormData();
 
-    for (var i = 0; i < this.files.length; i++) {
-      formData.append('file[]', this.files[i]);
-    }
+    this.files.forEach(file => {
+      formData.append('file[]', file);
+      this._digitalSignatureService.sign(file)
+    })
+
+  
   }
 
   resendSendCode() {}
