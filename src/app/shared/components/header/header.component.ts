@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 
 @Component({
@@ -9,29 +8,33 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  menuList = [
+  public menuList = [
     { label: 'Profile', icon: 'account_circle' },
     { label: 'Logout', icon: 'logout' },
   ];
-  iconProfile = 'widgets';
-  value: string = '';
+  public iconProfile = 'widgets';
+  public value: string = '';
   public login: any;
-  headerTitle = 'Sign out';
-  constructor(private _router: Router, private _apiService: ApiService) {}
+
+  public headerTitle = '';
+
+  constructor(private _router: Router, private _apiService: ApiService) {
+    const isCheckRout = window.location.href.includes('/login/register');
+    this.headerTitle = isCheckRout ? 'Sign In' : 'Sign Out'
+  }
 
   ngOnInit(): void {
-    this.redirect();
-    this.login = this._apiService.login;
+    this.login = this._apiService.login$;
   }
 
   redirect() {
-    if (this._router.url === '/login') {
-      this.headerTitle = 'Sign in';
-      this._router.navigateByUrl('/login/register');
-    }
-    if (this._router.url === '/register') {
+    const isCheckRout = window.location.href.includes('/login/register');
+    if (isCheckRout) {
       this.headerTitle = 'Sign out';
-      this._router.navigateByUrl('/login');
+      this._router.navigate(['login']);
+    } else {
+      this.headerTitle = 'Sign In';
+      this._router.navigate(['login/register']);
     }
   }
 
@@ -48,6 +51,7 @@ export class HeaderComponent implements OnInit {
         this._router.navigate(['settings']);
         break;
       case 'Logout':
+        this._apiService.login$.next(false)
         this._router.navigate(['login']);
         break;
       default:

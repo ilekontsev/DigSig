@@ -7,12 +7,13 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { SignatureComponent } from './components/signature/signature.component';
 
 const routes: Routes = [
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent, data: {headerTitle: 'Sing out'} },
+  { path: 'login/register', component: LoginComponent, data: {headerTitle: 'Sing in'} },
   { path: 'signature', component: SignatureComponent },
   { path: 'profile', component: ProfileComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'login/register', component: LoginComponent },
-  { path: 'not-found', component: NotFoundComponent },
-  { path: '**', redirectTo: 'not-found' },
+  { path: '404', component: NotFoundComponent },
+  { path: '**', redirectTo: '/404', pathMatch: 'full'  },
 ];
 
 @NgModule({
