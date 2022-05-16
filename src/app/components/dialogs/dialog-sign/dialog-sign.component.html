@@ -11,7 +11,7 @@
   <div class="inputs flex">
     <mat-form-field class="width-input" appearance="fill">
       <mat-label>Secret key</mat-label>
-      <input matInput />
+      <input matInput (change)="inputSecretKey($event)"/>
     </mat-form-field>
     <button
       mat-raised-button
@@ -21,6 +21,23 @@
     >
       Sign
     </button>
+
+    <mat-form-field class="width-input" appearance="fill">
+      <mat-label>Secret key</mat-label>
+      <input matInput [value]="secretKey"/>
+    </mat-form-field>
+    <mat-form-field class="width-input" appearance="fill">
+      <mat-label>Public key</mat-label>
+      <input matInput [value]="publicKey"/>
+    </mat-form-field>
+    <button
+    mat-raised-button
+    class="button-dialog"
+    color="primary"
+    (click)="generateKey()"
+  >
+    generate
+  </button>
   </div>
 
   <ngx-dropzone (change)="onSelect($event)">
