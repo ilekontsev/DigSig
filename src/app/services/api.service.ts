@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +22,12 @@ export class ApiService {
     this._http.post('http://localhost:3000/user', data).subscribe((data) => {
       this.setTokenInLocalStorage(data);
     });
+  }
+
+  refreshToken() : Observable<any> {
+    return this._http.post('http://localhost:3000/users/refreshToken', {
+      refToken: localStorage.getItem("refToken")
+    })
   }
 
   setTokenInLocalStorage(data: any) {
