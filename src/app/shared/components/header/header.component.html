@@ -19,7 +19,7 @@
 <ng-template #profile>
   <div class="wrapper-menu">
     <mat-form-field class="example-form-field" appearance="standard">
-      <input matInput placeholder="Search" />
+      <input matInput placeholder="Search" [(ngModel)]="value" />
       <button
         *ngIf="value"
         matSuffix

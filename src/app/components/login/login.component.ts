@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { DATA_BUTTONS, DATA_LOGIN } from './constant';
@@ -15,6 +15,8 @@ export class LoginComponent implements OnInit {
   dataButtons = DATA_BUTTONS;
   dataLogin = DATA_LOGIN;
   formlogin = true;
+  @Input() headerTitle: string = ''
+
   constructor(private _router: Router, private _apiService: ApiService) {
     localStorage.removeItem('token');
     localStorage.removeItem('refToken');

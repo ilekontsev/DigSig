@@ -6,8 +6,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiService {
-  data = {};
-  login = new BehaviorSubject(false);
+  public data = {};
+  public login$ = new BehaviorSubject(false);
   constructor(private _http: HttpClient) {}
 
   register(data: any) {
@@ -16,24 +16,33 @@ export class ApiService {
       .subscribe((data: any) => {
         this.setTokenInLocalStorage(data);
       });
+    //delete this when was backend
+
+      this.setTokenInLocalStorage(data);
+
   }
 
   loginUser(data: any) {
-    this._http.post('http://localhost:3000/user', data).subscribe((data) => {
-      this.setTokenInLocalStorage(data);
-    });
+    this._http.post('http://localhost:3000/user', data).subscribe(
+      (data) => {
+        this.setTokenInLocalStorage(data);
+      },
+    );
+    //delete this when was backend
+    this.setTokenInLocalStorage(data);
+
   }
 
-  refreshToken() : Observable<any> {
+  refreshToken(): Observable<any> {
     return this._http.post('http://localhost:3000/users/refreshToken', {
-      refToken: localStorage.getItem("refToken")
-    })
+      refToken: localStorage.getItem('refToken'),
+    });
   }
 
   setTokenInLocalStorage(data: any) {
     this.data = data;
     localStorage.setItem('token', data.token);
     localStorage.setItem('refToken', data.refToken);
-    this.login.next(true);
+    this.login$.next(true);
   }
 }
