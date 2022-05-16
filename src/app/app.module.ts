@@ -15,7 +15,8 @@ import { DialogSignComponent } from './components/dialogs/dialog-sign/dialog-sig
 import { DialogCheckComponent } from './components/dialogs/dialog-check/dialog-check.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { FormsModule } from '@angular/forms';
-import {  HttpClientModule,  } from '@angular/common/http';
+import {  HttpClientModule, HTTP_INTERCEPTORS,  } from '@angular/common/http';
+import { AuthInterceptorService } from './interceptors/auth.Interceptor';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,11 @@ import {  HttpClientModule,  } from '@angular/common/http';
     BrowserAnimationsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS, 
+    useClass: AuthInterceptorService, 
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
