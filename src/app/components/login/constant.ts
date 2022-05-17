@@ -72,14 +72,14 @@ export const DATA_BUTTONS = [
 
   export const DATA_LOGIN = [
     {
-        label: 'Enter your Email or Telephone',
+        label: 'Enter your Email',
         aria_label: 'CLear',
         type: 'text',
-        placeholder: 'Login',
+        placeholder: 'email',
         icon: 'clear',
         input: '',
-        key: 'login'
-  
+        key: 'email'
+
       },
     {
         label: 'Enter your password',
@@ -89,6 +89,6 @@ export const DATA_BUTTONS = [
         icon: 'visibility_off',
         input: '',
         key: 'password'
-  
+
       },
   ]

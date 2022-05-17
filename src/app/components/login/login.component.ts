@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiService } from 'src/app/services/api.service';
+import { AuthApiService } from 'src/app/services/auth-api.service';
+import { StateService } from 'src/app/shared/services/state.service';
 import { DATA_BUTTONS, DATA_LOGIN } from './constant';
 
 @Component({
@@ -15,37 +16,36 @@ export class LoginComponent implements OnInit {
   dataButtons = DATA_BUTTONS;
   dataLogin = DATA_LOGIN;
   formlogin = true;
-  @Input() headerTitle: string = ''
 
-  constructor(private _router: Router, private _apiService: ApiService) {
+  @Input() headerTitle: string = '';
+
+  constructor(
+    private _router: Router,
+    private _authApiService: AuthApiService
+  ) {
     localStorage.removeItem('token');
     localStorage.removeItem('refToken');
-    if (this._router.url === '/login') {
-      this.formlogin = true;
-    } else {
-      this.formlogin = false;
-    }
+    const url = window.location.href;
+    this.formlogin = !url.includes('/login/register')
   }
 
-  ngOnInit(): void {
-    
-  }
+  ngOnInit(): void {}
 
   setFieldInput(a: string, b: string) {}
 
   resendEmail() {
     const data: any = {};
-   
+
     if (this.formlogin) {
       this.dataLogin.forEach((item) => {
         data[item.key] = item.input;
       });
-      this._apiService.loginUser(data);
+      this._authApiService.loginUser(data);
     } else {
       this.dataButtons.forEach((item) => {
         data[item.key] = item.input;
       });
-      this._apiService.register(data);
+      this._authApiService.register(data);
     }
   }
 
@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
 
   getResponse() {
     setTimeout(() => {
-      this._router.navigateByUrl('/signature');
+      this._router.navigate(['/signature']);
     }, 2000);
   }
 
@@ -61,8 +61,8 @@ export class LoginComponent implements OnInit {
     if (action === 'forward' && this.value < 99) {
       this.value += 33.33;
       this.templateNumber += 1;
-      this.resendEmail();
       if (this.templateNumber === 3) {
+        this.resendEmail();
         this.getResponse();
       }
     } else if (action === 'back' && this.value !== 0) {

@@ -8,6 +8,8 @@ import { DialogSignComponent } from '../dialogs/dialog-sign/dialog-sign.componen
 import { take } from 'rxjs/operators';
 import { DialogCheckComponent } from '../dialogs/dialog-check/dialog-check.component';
 import { StateService } from 'src/app/shared/services/state.service';
+import { AuthApiService } from 'src/app/services/auth-api.service';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-signature',
@@ -18,17 +20,15 @@ export class SignatureComponent implements OnInit {
   widthDialog = '60%';
   constructor(
     private _dialog: MatDialog,
-    private _stateService: StateService
+    private _apiService: ApiService
   ) {}
+
   ngOnInit(): void {
-    this._stateService.widthDialog.subscribe(
-      (width: string) => (this.widthDialog = width)
-    );
+
   }
 
   openDialogSign(): void {
-    const dialogRef = this._dialog.open(DialogSignComponent, {
-    });
+    const dialogRef = this._dialog.open(DialogSignComponent, {});
 
     dialogRef
       .afterClosed()
@@ -39,8 +39,7 @@ export class SignatureComponent implements OnInit {
   }
 
   openDialogCheck(): void {
-    const dialogRef = this._dialog.open(DialogCheckComponent, {
-    });
+    const dialogRef = this._dialog.open(DialogCheckComponent, {});
 
     dialogRef
       .afterClosed()

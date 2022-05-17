@@ -17,6 +17,8 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
 import { FormsModule } from '@angular/forms';
 import {  HttpClientModule, HTTP_INTERCEPTORS,  } from '@angular/common/http';
 import { AuthInterceptorService } from './interceptors/auth.Interceptor';
+import { PublicKeyComponent } from './components/public-key/public-key.component';
+import { GenerateKeyComponent } from './components/dialogs/generate-key/generate-key.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,8 @@ import { AuthInterceptorService } from './interceptors/auth.Interceptor';
     HeaderComponent,
     DialogSignComponent,
     DialogCheckComponent,
+    PublicKeyComponent,
+    GenerateKeyComponent,
   ],
   imports: [
     NgxDropzoneModule,
@@ -39,8 +43,8 @@ import { AuthInterceptorService } from './interceptors/auth.Interceptor';
     HttpClientModule
   ],
   providers: [{
-    provide: HTTP_INTERCEPTORS, 
-    useClass: AuthInterceptorService, 
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptorService,
     multi: true
   }],
   bootstrap: [AppComponent]

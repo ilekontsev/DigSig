@@ -1,15 +1,35 @@
 import { Component, OnInit } from '@angular/core';
+import { DigitalSignatureService } from 'src/app/services/digital-signature.service';
 
 @Component({
   selector: 'app-dialog-check',
   templateUrl: './dialog-check.component.html',
-  styleUrls: ['./dialog-check.component.scss']
+  styleUrls: ['./dialog-check.component.scss'],
 })
 export class DialogCheckComponent implements OnInit {
+  files = [];
 
-  constructor() { }
+  constructor(private _digitalSignatureService: DigitalSignatureService) {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  onSelect(event: any) {
+    console.log(event);
+    this.files.push(...event.addedFiles);
+
+    const formData = new FormData();
+
+    this.files.forEach((file) => {
+      formData.append('file[]', file);
+      this._digitalSignatureService.getHash(file);
+    });
   }
 
+  onRemove(event: any) {
+    this.files.splice(this.files.indexOf(event), 1);
+  }
+
+  verifyDocument(){
+    
+  }
 }
