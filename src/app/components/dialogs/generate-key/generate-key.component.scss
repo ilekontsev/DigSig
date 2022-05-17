@@ -1,0 +1,33 @@
+
+.wrapper{
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  position: relative;
+}
+
+.button-back{
+  position: absolute;
+  right: -20px;
+  bottom: -20px;
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.example-full-width{
+  margin-right: 10px;
+  width: 300px;
+}
+
+.resend-code{
+  cursor: pointer;
+  text-align: center;
+
+}
+.resend-code:hover{
+  text-decoration: underline;
+}

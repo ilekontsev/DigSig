@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiService } from 'src/app/services/api.service';
+import { of } from 'rxjs';
+import { AuthApiService } from 'src/app/services/auth-api.service';
+import { StateService } from '../../services/state.service';
 
 @Component({
   selector: 'app-header',
@@ -18,13 +20,19 @@ export class HeaderComponent implements OnInit {
 
   public headerTitle = '';
 
-  constructor(private _router: Router, private _apiService: ApiService) {
+  constructor(
+    private _router: Router,
+    private _authApiService: AuthApiService,
+  ) {
     const isCheckRout = window.location.href.includes('/login/register');
-    this.headerTitle = isCheckRout ? 'Sign In' : 'Sign Out'
+    this.headerTitle = isCheckRout ? 'Sign In' : 'Sign Out';
   }
 
   ngOnInit(): void {
-    this.login = this._apiService.login$;
+    this.login = this._authApiService.login$
+    if(localStorage.getItem('token')){
+      this._authApiService.login$.next(true)
+    }
   }
 
   redirect() {
@@ -51,7 +59,7 @@ export class HeaderComponent implements OnInit {
         this._router.navigate(['settings']);
         break;
       case 'Logout':
-        this._apiService.login$.next(false)
+        this._authApiService.login$.next(false);
         this._router.navigate(['login']);
         break;
       default:

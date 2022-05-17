@@ -1,0 +1,1 @@
+export const SECRET_PHRASE = 'EFJS21awlrjgrd32da12Dr32FB32Flgr00DvxvFews8davxbt3242SFegwsrEe23FbdNmefMMfe32DWA'

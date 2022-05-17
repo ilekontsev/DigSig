@@ -1,1 +1,34 @@
-<p>dialog-check works!</p>
+
+
+
+    <div class="inputs flex">
+      <mat-form-field class="width-input" appearance="fill">
+        <mat-label>Public key</mat-label>
+        <input matInput />
+      </mat-form-field>
+      <mat-form-field class="width-input" appearance="fill">
+        <mat-label>Signature</mat-label>
+        <input matInput />
+      </mat-form-field>
+      <button
+        mat-raised-button
+        class="button-dialog"
+        color="primary"
+        (click)="verifyDocument()"
+      >
+        Verify
+      </button>
+    </div>
+  
+    <ngx-dropzone (change)="onSelect($event)">
+      <ngx-dropzone-label class="color-text">Drop it file</ngx-dropzone-label>
+      <ngx-dropzone-preview
+        *ngFor="let f of files"
+        [removable]="true"
+        (removed)="onRemove(f)"
+      >
+        <ngx-dropzone-label class="color-text"
+          >{{ f.name }} ({{ f.type }})</ngx-dropzone-label
+        >
+      </ngx-dropzone-preview>
+    </ngx-dropzone>

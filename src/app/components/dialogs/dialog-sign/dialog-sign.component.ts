@@ -10,18 +10,26 @@ import { StateService } from 'src/app/shared/services/state.service';
 })
 export class DialogSignComponent implements OnInit {
   title = 'dropzone';
-
-  constructor(
-    private _stateService: StateService,
-    private _digitalSignatureService: DigitalSignatureService
-  ) {}
-
-  ngOnInit(): void {}
+  secretKey: any = '';
+  publicKey: any = '';
   formTemplate = 'dropzone';
   files: File[] = [];
+  privateKey: any = '';
 
-  singDocument() {
+  constructor(private _digitalSignatureService: DigitalSignatureService) {}
+
+  ngOnInit(): void {}
+
+  async singDocument() {
+    // if (!this.secretKey.trim()) {
+    //   return;
+    // }
+
     this.formTemplate = 'verification';
+    // let keys = this._digitalSignatureService.generateKey();
+    // console.log(keys);
+    // const t = await this._digitalSignatureService.sign(keys.privateKey);
+    // console.log(t);
   }
 
   onSelect(event: any) {
@@ -30,18 +38,15 @@ export class DialogSignComponent implements OnInit {
 
     const formData = new FormData();
 
-    this.files.forEach(file => {
+    this.files.forEach((file) => {
       formData.append('file[]', file);
-      this._digitalSignatureService.sign(file)
-    })
-
-  
+      this._digitalSignatureService.getHash(file);
+    });
   }
 
   resendSendCode() {}
 
   onRemove(event: any) {
-    console.log(event);
     this.files.splice(this.files.indexOf(event), 1);
   }
 }

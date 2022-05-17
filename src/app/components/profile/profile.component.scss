@@ -38,7 +38,7 @@
       font-size: 120px;
       color: #9fef0e;
     }
-  
+
   }
 }
 
@@ -72,6 +72,9 @@
   box-shadow: 0 0 5px #111927 inset;
 
   .settings-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     border-bottom: 1px solid rgb(141, 141, 141);
     padding-bottom: 20px;
     margin-bottom: 20px;
