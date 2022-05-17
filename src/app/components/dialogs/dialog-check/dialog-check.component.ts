@@ -8,6 +8,10 @@ import { DigitalSignatureService } from 'src/app/services/digital-signature.serv
 })
 export class DialogCheckComponent implements OnInit {
   files = [];
+  publicKey= ''
+  signature = ''
+  isCheck: boolean;
+  formTemplate = 'verify'
 
   constructor(private _digitalSignatureService: DigitalSignatureService) {}
 
@@ -29,7 +33,8 @@ export class DialogCheckComponent implements OnInit {
     this.files.splice(this.files.indexOf(event), 1);
   }
 
-  verifyDocument(){
-    
+  async verifyDocument(){
+    this.formTemplate = 'checkHash'
+    this.isCheck = await this._digitalSignatureService.verify(this.publicKey, this.signature)
   }
 }

@@ -119,7 +119,7 @@ export class DigitalSignatureService {
     return new Uint8Array(signature).join(':');
   }
 
-  async verify(key: any, signatureStr: any, message: any) {
+  async verify(key: any, signatureStr: any) {
     const publicKeyJwk = this.decrypt(key);
 
     const signatureArr = signatureStr.split(':').map((x: any) => +x);
@@ -134,7 +134,7 @@ export class DigitalSignatureService {
       false,
       ['verify']
     );
-    const data = new TextEncoder().encode(message);
+    const data = new TextEncoder().encode(this._hash);
 
     const ok = await window.crypto.subtle.verify(
       {

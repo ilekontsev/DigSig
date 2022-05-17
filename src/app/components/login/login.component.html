@@ -1,12 +1,22 @@
 <div class="root">
-  <div class="wrapper-root" *ngIf="templateNumber !== 3; else loading">
+  <div class="wrapper-root" *ngIf="templateNumber !== 2; else loading">
+
+    <div  class='show-toastr' *ngIf="showData.length">
+      <span>Fill Field</span>
+      <div *ngFor="let item of showData">
+        <div class="error-messages">{{item.key}}</div>
+      </div>
+    </div>
+
+
+
     <div class="progress-bar">
       <mat-progress-bar mode="determinate" [value]="value"></mat-progress-bar>
     </div>
 
     <div class="container">
-      <div class="arrow-form">
-        <button mat-fab color="basic" (click)="handleArrow('back')">
+      <div class="arrow-form" >
+        <button mat-fab color="basic" [disabled]="templateNumber === 0" [ngClass]="{disable: templateNumber === 0 }" (click)="handleArrow('back')">
           <mat-icon>arrow_back_ios</mat-icon>
         </button>
       </div>
@@ -17,9 +27,6 @@
         </ng-container>
         <ng-container *ngSwitchCase="'1'">
           <ng-container [ngTemplateOutlet]="codeEmail"></ng-container>
-        </ng-container>
-        <ng-container *ngSwitchCase="'2'">
-          <ng-container [ngTemplateOutlet]="codePhone"></ng-container>
         </ng-container>
       </ng-container>
 
@@ -49,32 +56,20 @@
   <div class="container-form">
     <mat-form-field class="example-form-field" appearance="fill">
       <mat-label>Verification Code</mat-label>
-      <input matInput type="text" ([ngModel])="verificationCode" />
+      <input matInput type="text" [(ngModel)]="verificationCode" />
       <button matSuffix mat-icon-button aria-label="Clear">
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
-    <button mat-raised-button color="primary" (click)="resendSendCode()">resend code</button>
-  </div>
-</ng-template>
-
-<ng-template #codePhone>
-  <div class="container-form">
-    <mat-form-field class="example-form-field" appearance="fill">
-      <mat-label>Verification phone</mat-label>
-      <input matInput type="text" />
-      <button matSuffix mat-icon-button aria-label="Clear">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="sendCode()">resend code</button>
   </div>
 </ng-template>
 
 <ng-template #form>
-  <div class="container-form">
-    <mat-form-field class="example-form-field" appearance="fill"  *ngFor="let data of dataButtons">
+  <div class="container-form" >
+    <mat-form-field class="example-form-field" appearance="fill"  *ngFor="let data of dataRegister">
       <mat-label>{{ data.label }}</mat-label>
-      <input matInput [type]="data.type" [(ngModel)]='data.input'/>
+      <input matInput [type]="data.type"  [(ngModel)]='data.input'/>
       <button matSuffix mat-icon-button aria-label="data.aria_label">
         <mat-icon>{{ data.icon }}</mat-icon>
       </button>
@@ -87,3 +82,5 @@
     <mat-spinner></mat-spinner>
   </div>
 </ng-template>
+
+

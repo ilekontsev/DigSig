@@ -1,18 +1,27 @@
-.color-text{
-    color: black;
-    overflow: hidden;
+.color-text {
+  color: black;
+  overflow: hidden;
 }
 
-.flex{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-.width-input{
-    width: 300px;
-}
-
-.button-dialog{
-    margin-left: 20px;
+.width-input {
+  width: 300px;
 }
 
+.button-dialog {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+}
+
+.resend-code {
+  cursor: pointer;
+  text-align: center;
+}
+.resend-code:hover {
+  text-decoration: underline;
+}

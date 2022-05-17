@@ -39,16 +39,6 @@ export const DATA_BUTTONS = [
 
     },
     {
-      label: 'Telephone',
-      aria_label: 'Clear',
-      type: 'tel',
-      placeholder: '555-555-1234',
-      icon: 'close',
-      input: '',
-      key: 'telephone'
-
-    },
-    {
       label: 'Enter your password',
       aria_label: 'Hide password',
       type: 'password',
@@ -65,7 +55,7 @@ export const DATA_BUTTONS = [
       placeholder: 'Ex. pat@example.com',
       icon: 'visibility_off',
       input: '',
-      key: ''
+      key: 'repeatPassword'
 
     },
   ];
