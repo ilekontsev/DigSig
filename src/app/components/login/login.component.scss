@@ -16,6 +16,10 @@
     align-items: center;
 }
 
+.disable{
+  opacity: 0.5;
+}
+
 .container{
     display: flex;
     justify-content: center;
@@ -36,4 +40,17 @@
     button{
         background: #2C3441;
     }
+}
+
+
+.show-toastr{
+  position: absolute;
+  left: 0;
+  text-align: center;
+  padding: 10px;
+  border: 1px solid black;
+  font-size: 24px;
+  .error-messages{
+    color: red;
+  }
 }

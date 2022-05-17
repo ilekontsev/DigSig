@@ -19,18 +19,7 @@ export class AuthApiService {
       });
   }
 
-  verifyCode(code: any) {
-    const url = 'http://localhost:3000/users/verify/' + code;
-    return this._http.get(url, {}).pipe(
-      map(response => {
-        if(response instanceof HttpResponse) {
-          if(response.status === 200) return of(true)
-          else return of(false);
-        }
-        else return of(false);
-      })
-    )
-  }
+
 
   loginUser(data: any) {
     this._http.post('http://localhost:3000/user', data).subscribe(

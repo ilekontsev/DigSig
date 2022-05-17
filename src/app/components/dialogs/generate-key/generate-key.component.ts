@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { DigitalSignatureService } from 'src/app/services/digital-signature.service';
+import { StateService } from 'src/app/shared/services/state.service';
 
 @Component({
   selector: 'app-generate-key',
@@ -16,7 +17,8 @@ export class GenerateKeyComponent implements OnInit {
 
   constructor(
     private _digitalSignatureService: DigitalSignatureService,
-    private _apiService: ApiService
+    private _apiService: ApiService,
+    private _stateService: StateService
   ) {}
 
   ngOnInit(): void {}
@@ -35,8 +37,11 @@ export class GenerateKeyComponent implements OnInit {
     this._apiService
       .savePublicKeyAndMethodEncrypt(dataKeys.publicKey, 'RSASSA-PKCS1-V1_5')
       .subscribe((data) => {
-        this.publicKey = dataKeys.publicKey;
-        this.privateKey = dataKeys.privateKey;
+        if (data) {
+          this._stateService.publicKey$.next(dataKeys.publicKey)
+          this.publicKey = dataKeys.publicKey;
+          this.privateKey = dataKeys.privateKey;
+        }
       });
   }
 

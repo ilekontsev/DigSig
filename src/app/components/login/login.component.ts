@@ -1,8 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ApiService } from 'src/app/services/api.service';
 import { AuthApiService } from 'src/app/services/auth-api.service';
-import { StateService } from 'src/app/shared/services/state.service';
 import { DATA_BUTTONS, DATA_LOGIN } from './constant';
 
 @Component({
@@ -13,21 +12,24 @@ import { DATA_BUTTONS, DATA_LOGIN } from './constant';
 export class LoginComponent implements OnInit {
   value = 0;
   templateNumber = 0;
-  dataButtons = DATA_BUTTONS;
+  dataRegister = DATA_BUTTONS;
   dataLogin = DATA_LOGIN;
   formlogin = true;
   public verificationCode: string;
-
+  user = { email: '' };
+  showData = [];
+  emailUser = '';
   @Input() headerTitle: string = '';
 
   constructor(
     private _router: Router,
-    private _authApiService: AuthApiService
+    private _authApiService: AuthApiService,
+    private _apiService: ApiService
   ) {
     localStorage.removeItem('token');
     localStorage.removeItem('refToken');
     const url = window.location.href;
-    this.formlogin = !url.includes('/login/register')
+    this.formlogin = !url.includes('/login/register');
   }
 
   ngOnInit(): void {}
@@ -43,46 +45,81 @@ export class LoginComponent implements OnInit {
       });
       this._authApiService.loginUser(data);
     } else {
-      this.dataButtons.forEach((item) => {
+      this.dataRegister.forEach((item) => {
         data[item.key] = item.input;
       });
       this._authApiService.register(data);
     }
   }
 
-  resendSendCode() {}
-
-  getResponse() {
-    setTimeout(() => {
-      this._router.navigate(['/signature']);
-    }, 2000);
-  }
 
   handleArrow(action: string) {
-    if(this.value === 0) {
-      this.resendEmail();
-    }
-    if(this.value === 33.33) {
-      this.validateCode()
-    }
-    if (action === 'forward' && this.value < 99) {
-      this.value += 33.33;
+    if (action === 'forward' && this.value <= 100) {
+      if (!!this.checkField()) {
+        return;
+      }
+      this.value += 50;
       this.templateNumber += 1;
-      if (this.templateNumber === 3) {
-        this.getResponse();
+
+      if (this.templateNumber === 1) {
+        this.sendCode();
+      }
+
+      if (this.templateNumber === 2) {
+        this.validateCode();
+        this.resendEmail();
       }
     } else if (action === 'back' && this.value !== 0) {
-      this.value -= 33.33;
+      this.value -= 50;
       this.templateNumber -= 1;
     }
   }
 
+  sendCode() {
+    this._apiService.sendMail(this.emailUser).subscribe((data: any) => {});;
+  }
+
   private validateCode() {
-    const verificationCode = "blablabla";
-    this._authApiService.verifyCode(verificationCode).subscribe(isVerifyed => {
-      // isVerifyed - observable<Bollean>
-      //if yes - go forvard -> use data from previous form to send login request
-      //get tokens and redirect to main
-    })
+    this._apiService
+      .verifyCode(this.verificationCode, this.emailUser)
+      .subscribe((isVerifyed) => {
+        console.log(isVerifyed);
+        isVerifyed
+          ? this._router.navigate(['/signature'])
+          : (this.templateNumber = 1);
+      });
+  }
+
+  checkField() {
+    this.showData = [];
+    if (this.formlogin) {
+      this.dataLogin.forEach((item) => {
+        if (!item.input.trim()) {
+          this.showData.push(item);
+        }
+        if (item.key === 'email') {
+          this.emailUser = item.input;
+        }
+      });
+    } else {
+      let pass = '';
+      let repeatPass = '';
+      this.dataRegister.forEach((item) => {
+        if (!item.input.trim()) {
+          this.showData.push(item);
+        } else if (item.key === 'password') {
+          pass = item.input;
+        } else if (item.key === 'repeatPassword') {
+          repeatPass = item.input;
+        }
+        if (item.key === 'email') {
+          this.emailUser = item.input;
+        }
+      });
+      if (repeatPass !== pass) {
+        this.showData.push({ key: 'not equals passwords' });
+      }
+    }
+    return this.showData.length;
   }
 }

@@ -5,18 +5,22 @@
   <ng-container *ngSwitchCase="'verification'">
     <ng-container [ngTemplateOutlet]="codeEmail"></ng-container>
   </ng-container>
+  <ng-container *ngSwitchCase="'displayHash'">
+    <ng-container [ngTemplateOutlet]="displayHash"></ng-container>
+  </ng-container>
 </ng-container>
 
 <ng-template #dropzone>
   <div class="inputs flex">
     <mat-form-field class="width-input" appearance="fill">
       <mat-label>Secret key</mat-label>
-      <input matInput />
+      <input matInput type="password" [(ngModel)]="secretKey" />
     </mat-form-field>
     <button
       mat-raised-button
       class="button-dialog"
       color="primary"
+      [disabled]="!secretKey || !files.length"
       (click)="singDocument()"
     >
       Sign
@@ -41,14 +45,22 @@
   <div class="inputs flex">
     <mat-form-field class="width-input" appearance="fill">
       <mat-label>Verification email</mat-label>
-      <input matInput type="text" />
+      <input matInput type="text" [(ngModel)]="verivicationCode" />
     </mat-form-field>
     <div class="button-dialog">
-      <button mat-raised-button (click)="resendSendCode()">resend code</button>
-
-      <button mat-raised-button color="primary" (click)="singDocument()">
-        GO
+      <button mat-raised-button color="primary" (click)="singFinishDocument()">
+        Go
       </button>
+      <span class="resend-code" (click)="resendSendCode()"> resend code </span>
     </div>
+  </div>
+</ng-template>
+
+<ng-template #displayHash>
+  <div class="inputs flex">
+    <mat-form-field class="width-input" appearance="fill">
+      <mat-label>HASH</mat-label>
+      <input matInput type="text" readonly [value]="signHash" />
+    </mat-form-field>
   </div>
 </ng-template>

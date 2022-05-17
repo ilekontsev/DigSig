@@ -1,34 +1,53 @@
 
+<ng-container [ngSwitch]="formTemplate">
+  <ng-container *ngSwitchCase="'verify'">
+    <ng-container [ngTemplateOutlet]="verify"></ng-container>
+  </ng-container>
+  <ng-container *ngSwitchCase="'checkHash'">
+    <ng-container [ngTemplateOutlet]="checkHash"></ng-container>
+  </ng-container>
+</ng-container>
 
 
-    <div class="inputs flex">
-      <mat-form-field class="width-input" appearance="fill">
-        <mat-label>Public key</mat-label>
-        <input matInput />
-      </mat-form-field>
-      <mat-form-field class="width-input" appearance="fill">
-        <mat-label>Signature</mat-label>
-        <input matInput />
-      </mat-form-field>
-      <button
-        mat-raised-button
-        class="button-dialog"
-        color="primary"
-        (click)="verifyDocument()"
+<ng-template #verify>
+  <div class="inputs flex">
+    <mat-form-field class="width-input" appearance="fill">
+      <mat-label>Public key</mat-label>
+      <input matInput [(ngModel)]='publicKey'/>
+    </mat-form-field>
+    <mat-form-field class="width-input" appearance="fill">
+      <mat-label>Signature</mat-label>
+      <input matInput [(ngModel)]='signature'/>
+    </mat-form-field>
+    <button
+      mat-raised-button
+      class="button-dialog"
+      color="primary"
+      [disabled]="!publicKey || !signature || !files.length "
+      (click)="verifyDocument()"
+    >
+      Verify
+    </button>
+  </div>
+
+  <ngx-dropzone (change)="onSelect($event)">
+    <ngx-dropzone-label class="color-text">Drop it file</ngx-dropzone-label>
+    <ngx-dropzone-preview
+      *ngFor="let f of files"
+      [removable]="true"
+      (removed)="onRemove(f)"
+    >
+      <ngx-dropzone-label class="color-text"
+        >{{ f.name }} ({{ f.type }})</ngx-dropzone-label
       >
-        Verify
-      </button>
-    </div>
-  
-    <ngx-dropzone (change)="onSelect($event)">
-      <ngx-dropzone-label class="color-text">Drop it file</ngx-dropzone-label>
-      <ngx-dropzone-preview
-        *ngFor="let f of files"
-        [removable]="true"
-        (removed)="onRemove(f)"
-      >
-        <ngx-dropzone-label class="color-text"
-          >{{ f.name }} ({{ f.type }})</ngx-dropzone-label
-        >
-      </ngx-dropzone-preview>
-    </ngx-dropzone>
+    </ngx-dropzone-preview>
+  </ngx-dropzone>
+</ng-template>
+
+
+<ng-template #checkHash>
+  <mat-form-field class="width-input" appearance="fill">
+    <mat-label>Signature</mat-label>
+    <input matInput readonly [value]='isCheck'/>
+  </mat-form-field>
+</ng-template>

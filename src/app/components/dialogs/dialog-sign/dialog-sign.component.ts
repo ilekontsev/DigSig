@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Output } from '@angular/core';
+import { ApiService } from 'src/app/services/api.service';
 import { DigitalSignatureService } from 'src/app/services/digital-signature.service';
 import { StateService } from 'src/app/shared/services/state.service';
 
@@ -15,21 +16,39 @@ export class DialogSignComponent implements OnInit {
   formTemplate = 'dropzone';
   files: File[] = [];
   privateKey: any = '';
-
-  constructor(private _digitalSignatureService: DigitalSignatureService) {}
+  verivicationCode = '';
+  signHash = '';
+  constructor(
+    private _digitalSignatureService: DigitalSignatureService,
+    private _apiService: ApiService,
+    private _stateService: StateService
+  ) {}
 
   ngOnInit(): void {}
 
   async singDocument() {
-    // if (!this.secretKey.trim()) {
-    //   return;
-    // }
-
     this.formTemplate = 'verification';
+    this._apiService
+      .sendMail(this._stateService.user?.email)
+      .subscribe((data: any) => {});
+
     // let keys = this._digitalSignatureService.generateKey();
     // console.log(keys);
-    // const t = await this._digitalSignatureService.sign(keys.privateKey);
+    // const t =
     // console.log(t);
+  }
+
+  singFinishDocument() {
+    this._apiService
+      .verifyCode(this.verivicationCode, this._stateService.user?.email)
+      .subscribe(async (isVerifyed) => {
+        if (isVerifyed) {
+          this.signHash = await this._digitalSignatureService.sign(
+            this.secretKey
+          );
+          this.formTemplate = 'displayHash';
+        }
+      });
   }
 
   onSelect(event: any) {
