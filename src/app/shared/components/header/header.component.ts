@@ -24,11 +24,13 @@ export class HeaderComponent implements OnInit {
     private _router: Router,
     private _authApiService: AuthApiService,
   ) {
-    const isCheckRout = window.location.href.includes('/login/register');
-    this.headerTitle = isCheckRout ? 'Sign In' : 'Sign Out';
+   
   }
 
   ngOnInit(): void {
+    const isCheckRout = window.location.href.split("/").includes("register")
+    this.headerTitle = isCheckRout ? 'Login' : 'Sign In';
+    
     this.login = this._authApiService.login$
     if(localStorage.getItem('token')){
       this._authApiService.login$.next(true)
@@ -38,10 +40,10 @@ export class HeaderComponent implements OnInit {
   redirect() {
     const isCheckRout = window.location.href.includes('/login/register');
     if (isCheckRout) {
-      this.headerTitle = 'Sign out';
-      this._router.navigate(['login']);
-    } else {
       this.headerTitle = 'Sign In';
+      this._router.navigate(['/login']);
+    } else {
+      this.headerTitle = 'Login';
       this._router.navigate(['login/register']);
     }
   }
