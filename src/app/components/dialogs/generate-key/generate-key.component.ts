@@ -9,7 +9,7 @@ import { DigitalSignatureService } from 'src/app/services/digital-signature.serv
 })
 export class GenerateKeyComponent implements OnInit {
   formStep = 'select';
-  algorithms = ['sha', 'rss', 'ecdsa'];
+  algorithms = ['SHA', 'RSA', 'ECDSA'];
   privateKey = '';
   publicKey = '';
   emailVerify = false;
