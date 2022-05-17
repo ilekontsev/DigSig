@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -16,8 +17,19 @@ export class AuthApiService {
       .subscribe((data: any) => {
         this.setTokenInLocalStorage(data);
       });
+  }
 
-
+  verifyCode(code: any) {
+    const url = 'http://localhost:3000/users/verify/' + code;
+    return this._http.get(url, {}).pipe(
+      map(response => {
+        if(response instanceof HttpResponse) {
+          if(response.status === 200) return of(true)
+          else return of(false);
+        }
+        else return of(false);
+      })
+    )
   }
 
   loginUser(data: any) {

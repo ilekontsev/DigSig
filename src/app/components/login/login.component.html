@@ -49,7 +49,7 @@
   <div class="container-form">
     <mat-form-field class="example-form-field" appearance="fill">
       <mat-label>Verification Code</mat-label>
-      <input matInput type="text" />
+      <input matInput type="text" ([ngModel])="verificationCode" />
       <button matSuffix mat-icon-button aria-label="Clear">
         <mat-icon>close</mat-icon>
       </button>

@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   dataButtons = DATA_BUTTONS;
   dataLogin = DATA_LOGIN;
   formlogin = true;
+  public verificationCode: string;
 
   @Input() headerTitle: string = '';
 
@@ -58,16 +59,30 @@ export class LoginComponent implements OnInit {
   }
 
   handleArrow(action: string) {
+    if(this.value === 0) {
+      this.resendEmail();
+    }
+    if(this.value === 33.33) {
+      this.validateCode()
+    }
     if (action === 'forward' && this.value < 99) {
       this.value += 33.33;
       this.templateNumber += 1;
       if (this.templateNumber === 3) {
-        this.resendEmail();
         this.getResponse();
       }
     } else if (action === 'back' && this.value !== 0) {
       this.value -= 33.33;
       this.templateNumber -= 1;
     }
+  }
+
+  private validateCode() {
+    const verificationCode = "blablabla";
+    this._authApiService.verifyCode(verificationCode).subscribe(isVerifyed => {
+      // isVerifyed - observable<Bollean>
+      //if yes - go forvard -> use data from previous form to send login request
+      //get tokens and redirect to main
+    })
   }
 }
