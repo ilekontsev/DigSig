@@ -1,1 +1,27 @@
-<p>public-key works!</p>
+<div class="root">
+  <div class="wrapper">
+    <ng-container [ngTemplateOutlet]="users"></ng-container>
+    <ng-container></ng-container>
+  </div>
+</div>
+
+<ng-template #users>
+  <div class="container">
+    <div class="box-user" *ngFor="let user of showUsers">
+      <div class="wrapper-user">
+        <div class="block-name-user">
+          <div class="name">{{ user.user.lastName | titlecase }}</div>
+          <div class="name">{{ user.user.firstName | titlecase }}</div>
+          <div class="name">{{ user.user.middleName | titlecase }}</div>
+        </div>
+        <div class="block-email-user">
+          <div>{{ user.user.email }}</div>
+        </div>
+      </div>
+      <mat-form-field class="example-form-field" appearance="fill">
+        <mat-label>Public Key</mat-label>
+        <input matInput type="text" readonly [value]="user.key.key" />
+      </mat-form-field>
+    </div>
+  </div>
+</ng-template>

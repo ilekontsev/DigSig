@@ -34,7 +34,6 @@ export class SignatureComponent implements OnInit {
       .afterClosed()
       .pipe(take(1))
       .subscribe((result) => {
-        console.log('The dialog was closed');
       });
   }
 
@@ -45,7 +44,6 @@ export class SignatureComponent implements OnInit {
       .afterClosed()
       .pipe(take(1))
       .subscribe((result) => {
-        console.log('The dialog was closed');
       });
   }
 }

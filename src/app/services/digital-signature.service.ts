@@ -1,8 +1,5 @@
-import { toBase64String } from '@angular/compiler/src/output/source_map';
 import { Injectable } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
-import { Subject } from 'rxjs';
-import { SECRET_PHRASE } from '../shared/constants/secretPhrase';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +16,6 @@ export class DigitalSignatureService {
       return;
     }
 
-    console.time();
     const sha256 = CryptoJS.algo.SHA256.create();
     const file = input;
 
@@ -31,7 +27,6 @@ export class DigitalSignatureService {
 
     let i = 0;
     const readPart = () => {
-      console.log('Шаг ' + i);
       const reader = new FileReader();
       reader.onload = (e: any) => {
         const ab = e.target.result;
@@ -40,7 +35,6 @@ export class DigitalSignatureService {
         i++;
         if (i === partsAmount) {
           const hash = sha256.finalize().toString();
-          console.log(hash);
           this._hash = hash;
           console.timeEnd();
           return;
@@ -52,10 +46,48 @@ export class DigitalSignatureService {
     };
 
     readPart();
-    console.log(this._hash);
   }
 
-  async generateKey() {
+  switchGenerateKeys(select) {
+    switch (select) {
+      case 'ECDSA':
+        return this.ECDSAgenerateKey();
+
+      case 'RSASSA':
+        return this.RSASSAgenerateKey();
+
+      default:
+        return this.RSASSAgenerateKey();
+    }
+  }
+
+
+
+  private async ECDSAgenerateKey() {
+    const key = await window.crypto.subtle.generateKey(
+      {
+        name: 'ECDSA',
+        namedCurve: 'P-384',
+      },
+      true,
+      ['sign', 'verify']
+    );
+    const privateKeyE = await window.crypto.subtle.exportKey(
+      'jwk',
+      key.privateKey
+    );
+    const publicKeyE = await window.crypto.subtle.exportKey(
+      'jwk',
+      key.publicKey
+    );
+
+    return {
+      privateKey: this.encrypt(privateKeyE, 'ECDSA'),
+      publicKey: this.encrypt(publicKeyE, 'ECDSA'),
+    };
+  }
+
+  private async RSASSAgenerateKey() {
     const key = await window.crypto.subtle.generateKey(
       {
         name: 'RSASSA-PKCS1-V1_5',
@@ -78,26 +110,62 @@ export class DigitalSignatureService {
       key.publicKey
     );
 
-    console.log(privateKeyE);
-
     return {
-      privateKey: this.encrypt(JSON.stringify(privateKeyE)),
-      publicKey: this.encrypt(JSON.stringify(publicKeyE)),
+      privateKey: this.encrypt(privateKeyE, 'RSASSA'),
+      publicKey: this.encrypt(publicKeyE, 'RSASSA'),
     };
   }
 
-  encrypt(key) {
-    return window.btoa(key);
+  encrypt(key, method) {
+    let tkey = Object.assign({}, key, { mt: method });
+    return window.btoa(JSON.stringify(tkey));
   }
 
   decrypt(key) {
     return JSON.parse(window.atob(key));
   }
 
-  async sign(key: any) {
-    const secretKey = this.decrypt(key);
-    console.log('sign');
-    console.log(this._hash);
+  switchSign(key) {
+    const data = this.decrypt(key);
+
+    switch (data.mt) {
+      case 'ECDSA':
+        return this.ECDSAsign(data);
+
+      case 'RSASSA':
+        return this.RSASSAsign(data);
+
+      default:
+        return this.RSASSAsign(data);
+    }
+  }
+
+  private async ECDSAsign(secretKey) {
+    const privateKey = await window.crypto.subtle.importKey(
+      'jwk',
+      secretKey,
+      {
+        name: 'ECDSA',
+        namedCurve: 'P-384',
+      },
+      true,
+      ['sign']
+    );
+    const data = new TextEncoder().encode(this._hash);
+
+    let signature = await window.crypto.subtle.sign(
+      {
+        name: 'ECDSA',
+        hash: { name: 'SHA-384' },
+      },
+      privateKey,
+      data
+    );
+    return new Uint8Array(signature).join(':');
+  }
+
+
+  private async RSASSAsign(secretKey: any) {
     const privateKey = await window.crypto.subtle.importKey(
       'jwk',
       secretKey,
@@ -108,6 +176,7 @@ export class DigitalSignatureService {
       false,
       ['sign']
     );
+
     const data = new TextEncoder().encode(this._hash);
     const signature = await window.crypto.subtle.sign(
       {
@@ -119,9 +188,51 @@ export class DigitalSignatureService {
     return new Uint8Array(signature).join(':');
   }
 
-  async verify(key: any, signatureStr: any) {
-    const publicKeyJwk = this.decrypt(key);
+  switchVerify(key, signature) {
+    const data = this.decrypt(key);
 
+    switch (data.mt) {
+      case 'ECDSA':
+        return this.ECDSAverify(data, signature);
+
+      case 'RSASSA':
+        return this.RSASSAverify(data, signature);
+
+      default:
+        return this.RSASSAverify(data, signature);
+    }
+  }
+
+  private async ECDSAverify(publicKeyJwk, signatureStr) {
+    const signatureArr = signatureStr.split(':').map((x: any) => +x);
+    const signature = new Uint8Array(signatureArr).buffer;
+
+    const publicKey = await window.crypto.subtle.importKey(
+      'jwk',
+      publicKeyJwk,
+      {
+        name: 'ECDSA',
+        namedCurve: 'P-384',
+      },
+      true,
+      ['sign']
+    );
+
+    const data = new TextEncoder().encode(this._hash);
+
+    let ok = await window.crypto.subtle.verify(
+      {
+        name: 'ECDSA',
+        hash: { name: 'SHA-384' },
+      },
+      publicKey,
+      signature,
+      data
+    );
+    return ok;
+  }
+
+  private async RSASSAverify(publicKeyJwk: any, signatureStr: any) {
     const signatureArr = signatureStr.split(':').map((x: any) => +x);
     const signature = new Uint8Array(signatureArr).buffer;
     const publicKey = await window.crypto.subtle.importKey(
@@ -135,7 +246,6 @@ export class DigitalSignatureService {
       ['verify']
     );
     const data = new TextEncoder().encode(this._hash);
-
     const ok = await window.crypto.subtle.verify(
       {
         name: 'RSASSA-PKCS1-V1_5',
@@ -146,4 +256,6 @@ export class DigitalSignatureService {
     );
     return ok;
   }
+
+
 }

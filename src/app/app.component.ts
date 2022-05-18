@@ -12,7 +12,6 @@ export class AppComponent implements OnInit {
   constructor(private _stateService: StateService) {}
 
   ngOnInit(): void {
-    console.log(123)
     if (localStorage.getItem('token')) {
       this._stateService.whoami();
     }

@@ -9,7 +9,6 @@
       back
     </button>
 
-    <ng-container *ngTemplateOutlet="keys"></ng-container>
 
     <ng-container [ngSwitch]="formStep">
       <ng-container *ngSwitchCase="'select'">
@@ -20,6 +19,9 @@
       </ng-container>
       <ng-container *ngSwitchCase="'text'">
         <ng-container [ngTemplateOutlet]="text"></ng-container>
+      </ng-container>
+      <ng-container *ngSwitchCase="'answer'">
+        <ng-container [ngTemplateOutlet]="answer"></ng-container>
       </ng-container>
     </ng-container>
   </div>
@@ -43,7 +45,7 @@
   <div class="container">
     <mat-form-field class="example-full-width" appearance="fill">
       <mat-label>algorithm</mat-label>
-      <mat-select>
+      <mat-select [(value)]="selectedAlgorithm">
         <mat-option *ngFor="let algorithm of algorithms" [value]="algorithm">{{
           algorithm
         }}</mat-option>
@@ -60,12 +62,12 @@
   <div class="container">
     <mat-form-field class="example-form-field" appearance="fill">
       <mat-label>Verification Code</mat-label>
-      <input matInput type="text" />
+      <input matInput type="text" [(ngModel)]='verivicationCode'/>
       <button matSuffix mat-icon-button aria-label="Clear">
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
-    <button mat-raised-button color="primary" (click)="generateKeyFinish()">
+    <button mat-raised-button color="primary" [disabled]='!verivicationCode' (click)="generateKeyFinish()">
       Go
     </button>
     <span class="resend-code" (click)="resendSendCode()"> resend code </span>
@@ -73,9 +75,23 @@
 </ng-template>
 
 <ng-template #text>
+  <ng-container *ngTemplateOutlet="keys"></ng-container>
+
   <div class="container">
     <span> Remeber Private Key </span>
 
-    <button mat-raised-button color="primary">Ok</button>
+    <button mat-raised-button color="primary" (click)="onCloseClick()">Ok</button>
   </div>
+</ng-template>
+
+<ng-template #answer>
+  <div class="answer-wrapper">
+  <div class="text-block">
+  <div>You already have the key current key will not be valid.</div>
+  <div>Want to create a new one?</div></div>
+  <div class="button-block">
+  <button mat-raised-button color="primary" (click)="onCloseClick()">close</button>
+  <button mat-raised-button (click)="formStep = 'select'">Ok</button>
+</div>
+</div>
 </ng-template>

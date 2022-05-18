@@ -19,6 +19,7 @@ import {  HttpClientModule, HTTP_INTERCEPTORS,  } from '@angular/common/http';
 import { AuthInterceptorService } from './interceptors/auth.Interceptor';
 import { PublicKeyComponent } from './components/public-key/public-key.component';
 import { GenerateKeyComponent } from './components/dialogs/generate-key/generate-key.component';
+import { DeleteKeyComponent } from './components/dialogs/delete-key/delete-key.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { GenerateKeyComponent } from './components/dialogs/generate-key/generate
     DialogCheckComponent,
     PublicKeyComponent,
     GenerateKeyComponent,
+    DeleteKeyComponent,
   ],
   imports: [
     NgxDropzoneModule,

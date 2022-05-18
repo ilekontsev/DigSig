@@ -1,0 +1,54 @@
+
+
+
+
+<ng-container [ngSwitch]="formTemplate">
+  <ng-container *ngSwitchCase="'message'">
+    <ng-container [ngTemplateOutlet]="message"></ng-container>
+  </ng-container>
+  <ng-container *ngSwitchCase="'verification'">
+    <ng-container [ngTemplateOutlet]="codeEmail"></ng-container>
+  </ng-container>
+  <ng-container *ngSwitchCase="'text'">
+    <ng-container [ngTemplateOutlet]="text"></ng-container>
+  </ng-container>
+</ng-container>
+
+
+
+<ng-template #message>
+  <div class="wrapper">
+    <div class="text-block">
+      <div>If you remove the key, all your signatures will be invalid</div>
+      <div>Are you sure you want to delete the key?</div>
+    </div>
+    <div class="button-block">
+      <button mat-raised-button color="primary" (click)="onCloseClick()">close</button>
+      <button mat-raised-button (click)="deleteKey()">Ok</button>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #codeEmail>
+  <div class="container">
+    <mat-form-field class="example-form-field" appearance="fill">
+      <mat-label>Verification Code</mat-label>
+      <input matInput type="text" [(ngModel)]='verivicationCode'/>
+      <button matSuffix mat-icon-button aria-label="Clear">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+    <button mat-raised-button color="primary" [disabled]='!verivicationCode' (click)="finishDeleteKey()">
+      Go
+    </button>
+    <span class="resend-code" (click)="resendSendCode()"> resend code </span>
+  </div>
+</ng-template>
+
+<ng-template #text>
+  <div>{{showMessage}}</div>
+  <button mat-raised-button color="primary" (click)="onCloseClick()">
+    Ok
+  </button>
+</ng-template>
