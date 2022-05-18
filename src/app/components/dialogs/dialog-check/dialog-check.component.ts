@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from 'src/app/services/api.service';
 import { DigitalSignatureService } from 'src/app/services/digital-signature.service';
 
 @Component({
@@ -8,17 +9,19 @@ import { DigitalSignatureService } from 'src/app/services/digital-signature.serv
 })
 export class DialogCheckComponent implements OnInit {
   files = [];
-  publicKey= ''
-  signature = ''
-  isCheck: boolean;
-  formTemplate = 'verify'
+  publicKey = '';
+  signature = '';
+  isCheck: any;
+  formTemplate = 'verify';
 
-  constructor(private _digitalSignatureService: DigitalSignatureService) {}
+  constructor(
+    private _digitalSignatureService: DigitalSignatureService,
+    private _apiService: ApiService
+  ) {}
 
   ngOnInit(): void {}
 
   onSelect(event: any) {
-    console.log(event);
     this.files.push(...event.addedFiles);
 
     const formData = new FormData();
@@ -33,8 +36,17 @@ export class DialogCheckComponent implements OnInit {
     this.files.splice(this.files.indexOf(event), 1);
   }
 
-  async verifyDocument(){
-    this.formTemplate = 'checkHash'
-    this.isCheck = await this._digitalSignatureService.verify(this.publicKey, this.signature)
+  verifyDocument() {
+    this.formTemplate = 'checkHash';
+    const isCheckPublicKey = this._apiService
+      .checkPublickKey(this.publicKey)
+      .subscribe(async (res) => {
+        this.isCheck = res
+          ? await this._digitalSignatureService.switchVerify(
+              this.publicKey,
+              this.signature
+            )
+          : 'invalid public key';
+      });
   }
 }

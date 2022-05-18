@@ -48,7 +48,7 @@
       <input matInput type="text" [(ngModel)]="verivicationCode" />
     </mat-form-field>
     <div class="button-dialog">
-      <button mat-raised-button color="primary" (click)="singFinishDocument()">
+      <button mat-raised-button color="primary" [disabled]="!verivicationCode" (click)="singFinishDocument()">
         Go
       </button>
       <span class="resend-code" (click)="resendSendCode()"> resend code </span>

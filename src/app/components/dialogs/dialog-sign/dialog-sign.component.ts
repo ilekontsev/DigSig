@@ -18,32 +18,31 @@ export class DialogSignComponent implements OnInit {
   privateKey: any = '';
   verivicationCode = '';
   signHash = '';
+  dataUser;
   constructor(
     private _digitalSignatureService: DigitalSignatureService,
     private _apiService: ApiService,
     private _stateService: StateService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this._stateService.user$.subscribe((data) => {
+      this.dataUser = data;
+    });
+  }
 
   async singDocument() {
     this.formTemplate = 'verification';
-    this._apiService
-      .sendMail(this._stateService.user?.email)
-      .subscribe((data: any) => {});
-
-    // let keys = this._digitalSignatureService.generateKey();
-    // console.log(keys);
-    // const t =
-    // console.log(t);
+    this._apiService.sendMail(this.dataUser.email).subscribe((data: any) => {});
   }
 
   singFinishDocument() {
     this._apiService
-      .verifyCode(this.verivicationCode, this._stateService.user?.email)
+      .verifyCode(this.verivicationCode, this.dataUser.email)
       .subscribe(async (isVerifyed) => {
         if (isVerifyed) {
-          this.signHash = await this._digitalSignatureService.sign(
+          this._apiService.updateCountFiles();
+          this.signHash = await this._digitalSignatureService.switchSign(
             this.secretKey
           );
           this.formTemplate = 'displayHash';
@@ -52,7 +51,6 @@ export class DialogSignComponent implements OnInit {
   }
 
   onSelect(event: any) {
-    console.log(event);
     this.files.push(...event.addedFiles);
 
     const formData = new FormData();
@@ -63,7 +61,9 @@ export class DialogSignComponent implements OnInit {
     });
   }
 
-  resendSendCode() {}
+  resendSendCode() {
+    this._apiService.sendMail(this.dataUser.email).subscribe((data: any) => {});
+  }
 
   onRemove(event: any) {
     this.files.splice(this.files.indexOf(event), 1);

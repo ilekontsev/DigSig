@@ -52,7 +52,6 @@ export class LoginComponent implements OnInit {
     }
   }
 
-
   handleArrow(action: string) {
     if (action === 'forward' && this.value <= 100) {
       if (!!this.checkField()) {
@@ -76,17 +75,19 @@ export class LoginComponent implements OnInit {
   }
 
   sendCode() {
-    this._apiService.sendMail(this.emailUser).subscribe((data: any) => {});;
+    this._apiService.sendMail(this.emailUser).subscribe((data: any) => {});
   }
 
   private validateCode() {
     this._apiService
       .verifyCode(this.verificationCode, this.emailUser)
       .subscribe((isVerifyed) => {
-        console.log(isVerifyed);
-        isVerifyed
-          ? this._router.navigate(['/signature'])
-          : (this.templateNumber = 1);
+        if (isVerifyed) {
+          this._router.navigate(['/signature']);
+        } else {
+          this.templateNumber -= 1;
+          this.value -= 50;
+        }
       });
   }
 

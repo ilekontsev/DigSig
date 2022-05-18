@@ -10,27 +10,25 @@
 <ng-template #profile>
   <div class="block-profile">
     <div class="profile-avatar">
-      <div class="image">I</div>
+      <div class="image">
+        {{
+          (dataUser?.lastName && dataUser?.lastName[0].toUpperCase()) || "DS"
+        }}
+      </div>
     </div>
     <div class="block-profile-name">
-      <span class="profile-name profile-first-name">Ivan </span>
-      <span class="profile-name profile-first-name">Ivanov</span>
+      <span class="profile-name profile-first-name">{{
+        dataUser?.lastName | titlecase
+      }}</span>
+      <span class="profile-name profile-first-name">{{
+        dataUser?.firstName | titlecase
+      }}</span>
+      <span class="profile-name profile-first-name">{{
+        dataUser?.middleName | titlecase
+      }}</span>
     </div>
 
     <div class="border"></div>
-
-    <div class="block-profile-name">
-      <span class="profile-name profile-first-name">Info:</span>
-    </div>
-    <div class="block-profile-name info">
-      <span class="profile-name profile-first-name">Birthday: 26/05/97</span>
-    </div>
-    <div class="block-profile-name info">
-      <span class="profile-name profile-first-name">Status EDS: received</span>
-    </div>
-    <div class="block-profile-name info">
-      <span class="profile-name profile-first-name">Term EDS: Infifnity</span>
-    </div>
   </div>
 </ng-template>
 
@@ -39,7 +37,9 @@
     <div class="settings-title">
       <span> Profile settings/info</span>
 
-      <button mat-raised-button color="primary" (click)="generateKey()">Generate keys</button>
+      <button mat-raised-button color="primary" (click)="generateKey()">
+        Generate keys
+      </button>
     </div>
     <ng-container *ngTemplateOutlet="inputs"></ng-container>
   </div>
@@ -54,5 +54,5 @@
       </mat-form-field>
     </div>
   </ng-container>
-  <button mat-raised-button>Delete keys</button>
+  <button mat-raised-button *ngIf="infoUser.key || settingsList[0].key" (click)="deleteKey()">Delete keys</button>
 </ng-template>

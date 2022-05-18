@@ -8,12 +8,13 @@ import { ApiService } from 'src/app/services/api.service';
 export class StateService {
   public login$ = new Subject();
   public publicKey$ = new Subject();
-  public user: any = {};
+  public user$: any = new BehaviorSubject<any>({});
+  public search$ = new BehaviorSubject('')
   constructor(private _apiService: ApiService) {}
 
   whoami() {
     this._apiService.whoami().subscribe((data) => {
-      this.user = data;
+      this.user$.next(data);
     });
   }
 }

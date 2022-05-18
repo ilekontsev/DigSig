@@ -31,3 +31,22 @@
 .resend-code:hover{
   text-decoration: underline;
 }
+
+.answer-wrapper{
+  display: flex;
+  flex-direction: column;
+}
+
+.button-block{
+  display: flex;
+  align-self: flex-end;
+  margin: 10px 0px 0px 10px;
+}
+
+.text-block{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}

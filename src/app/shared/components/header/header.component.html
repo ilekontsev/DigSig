@@ -18,8 +18,9 @@
 
 <ng-template #profile>
   <div class="wrapper-menu">
-    <mat-form-field class="example-form-field" appearance="standard">
-      <input matInput placeholder="Search" [(ngModel)]="value" />
+    <mat-icon class="mr10" routerLink="/publicKey">public</mat-icon>
+    <mat-form-field class="example-form-field" *ngIf="isSearch" appearance="standard">
+      <input matInput placeholder="Search" [(ngModel)]="value"  />
       <button
         *ngIf="value"
         matSuffix
@@ -33,9 +34,9 @@
 
     <mat-icon class="mr10" routerLink="/signature">home</mat-icon>
 
-    <mat-icon class="mr10" matBadge="1" matBadgeColor="warn"
+    <!-- <mat-icon class="mr10" matBadge="1" matBadgeColor="warn"
       >notifications</mat-icon
-    >
+    > -->
 
     <mat-icon
       [matMenuTriggerFor]="menu"

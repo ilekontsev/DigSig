@@ -2,6 +2,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { StateService } from '../shared/services/state.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ import { map } from 'rxjs/operators';
 export class AuthApiService {
   public data = {};
   public login$ = new BehaviorSubject(false);
-  constructor(private _http: HttpClient) {}
+  constructor(private _http: HttpClient, private _stateService: StateService) {}
 
   register(data: any) {
     this._http
@@ -40,6 +41,7 @@ export class AuthApiService {
     this.data = data;
     localStorage.setItem('token', data.token);
     localStorage.setItem('refToken', data.refToken);
+    this._stateService.whoami()
     this.login$.next(true);
   }
 }
